@@ -1,13 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-import cgi
 
-hostName = "localhost"
+hostName = "0.0.0.0"
 serverPort = 8000
 
 class MyServer(BaseHTTPRequestHandler):
 
-    # Initialize class variables
     ok = True
     status_message = "OK"
 
@@ -33,7 +31,7 @@ class MyServer(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     webServer = HTTPServer((hostName, serverPort), MyServer)
-    print("Server started http://%s:%s" % (hostName, serverPort))
+    print(f"Server started http://{hostName}:{serverPort}")
 
     try:
         webServer.serve_forever()
@@ -42,3 +40,4 @@ if __name__ == "__main__":
 
     webServer.server_close()
     print("Server stopped.")
+
