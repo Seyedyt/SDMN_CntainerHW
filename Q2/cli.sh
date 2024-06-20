@@ -25,17 +25,8 @@ create_container() {
     echo 'Changing directory to new root'
     cd /
 
-    echo 'Checking if old root directory exists'
-    if [ ! -d /oldroot ]; then
-        echo '/oldroot directory does not exist, creating manually'
-        mkdir /oldroot
-    fi
-
     echo 'Listing new root'
     ls /
-
-    echo 'Listing old root'
-    ls /oldroot
 
     echo 'Unmounting old root'
     umount -l /oldroot || echo 'umount /oldroot failed'
@@ -50,7 +41,6 @@ create_container() {
         echo $$ > /sys/fs/cgroup/memory/container/cgroup.procs
     fi
 
-    echo 'Entering new namespace'
     exec /bin/bash" &
     pid=$!
 

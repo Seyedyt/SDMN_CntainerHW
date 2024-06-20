@@ -1,50 +1,27 @@
-# Simple Container Runtime CLI
+# Simple Container Runtime
 
-## Setup
+## Description
+This is a simple container runtime implemented in Python. It uses namespaces to isolate the container's process, network, and mount points. The root filesystem of the container is an Ubuntu 20.04 filesystem.
 
-1. **Download and Extract Ubuntu 20.04 Root Filesystem:**
-
-   - Pull the Ubuntu 20.04 image from DockerHub:
-
-     ```bash
-     docker pull ubuntu:20.04
-     ```
-
-   - Create a container from the image and export its filesystem:
-
-     ```bash
-     docker create --name ubuntu-container ubuntu:20.04
-     docker export ubuntu-container > ubuntu-rootfs.tar
-     docker rm ubuntu-container
-     ```
-
-   - Create a directory to extract the filesystem:
-
-     ```bash
-     mkdir -p /path/to/ubuntu-rootfs
-     ```
-
-   - Extract the tarball into the directory:
-
-     ```bash
-     tar -C /path/to/ubuntu-rootfs -xf ubuntu-rootfs.tar
-     ```
-
-   - Verify the extraction:
-
-     ```bash
-     ls /path/to/ubuntu-rootfs
-     ```
-
-2. **Update `cli.sh` Script:**
-
-   - Set the `UBUNTU_ROOTFS_PATH` variable in `cli.sh` to the path where you extracted the filesystem:
-
-     ```bash
-     UBUNTU_ROOTFS_PATH="/path/to/ubuntu-rootfs"  # Change this to the actual path
-     ```
+## Features
+- Creates new namespaces: net, mnt, pid, uts
+- Separate root filesystem
+- Optionally limits memory usage
 
 ## Usage
+1. Ensure you have the Ubuntu 20.04 filesystem prepared:
+    ```bash
+    mkdir /ubuntu_rootfs
+    cd /ubuntu_rootfs
+    sudo tar -xpf /path/to/ubuntu-20.04-base.tar.gz
+    ```
 
+2. Run the CLI:
+    ```bash
+    ./mycli.py <hostname> [memory_limit_in_MB]
+    ```
+
+### Example
 ```bash
-./cli.sh <hostname> [memory_limit]
+./mycli.py myhostname 100
+
