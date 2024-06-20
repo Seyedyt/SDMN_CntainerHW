@@ -3,7 +3,13 @@
 create_container() {
     hostname=$1
     echo "Creating container with hostname: $hostname"
-    # Logic to create container will go here
+    unshare --fork --pid --mount-proc --net --uts --mount /bin/bash &
+    sleep 1
+    pid=$!
+    echo "Setting hostname"
+    nsenter --target $pid --uts --hostname $hostname
+    echo "Entering new namespace"
+    nsenter --target $pid --all /bin/bash
 }
 
 if [ $# -lt 1 ]; then
@@ -13,3 +19,4 @@ fi
 
 hostname=$1
 create_container $hostname
+
