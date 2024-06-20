@@ -25,11 +25,23 @@ create_container() {
     echo 'Changing directory to new root'
     cd /
 
+    echo 'Checking if old root directory exists'
+    if [ ! -d /oldroot ]; then
+        echo '/oldroot directory does not exist, creating manually'
+        mkdir /oldroot
+    fi
+
+    echo 'Listing new root'
+    ls /
+
+    echo 'Listing old root'
+    ls /oldroot
+
     echo 'Unmounting old root'
-    umount -l /oldroot
+    umount -l /oldroot || echo 'umount /oldroot failed'
 
     echo 'Removing old root directory'
-    rmdir /oldroot || true
+    rmdir /oldroot || echo 'rmdir /oldroot failed'
 
     if [ ! -z '$memory_limit' ]; then
         echo 'Setting memory limit'
